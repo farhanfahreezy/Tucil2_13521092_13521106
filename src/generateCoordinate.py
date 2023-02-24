@@ -21,5 +21,5 @@ def printArrayCoordinate(arrayCoordinate):
         printCoordinate(arrayCoordinate[i])
         print()
 
-printArrayCoordinate(generateCoordinate(10,3))
+# printArrayCoordinate(generateCoordinate(10,3))
         
