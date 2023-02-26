@@ -1,25 +1,43 @@
-import generateCoordinate as gc
-import bruteForce as bf
-import displayCoordinate as dc
-import time
+from generateCoordinate import generateCoordinate, printCoordinate, printArrayCoordinate
+from displayCoordinate import displayCoordinate 
+from bruteForce import closestPair
+from divideAndConquer import solveDivideAndConquer
+from utilities import calculateDistance
+from time import time
 
-def mainBF():
-    n = int(input("n: "))
-    r = int(input("r: "))
-    arrayCoordinate = gc.generateCoordinate(n,r)
+def main():
+    """Main function"""
 
-    start = time.time()*1000
-    tempi,tempj = bf.closestPair(arrayCoordinate)
-    timetaken = time.time()*1000 - start
+    n = int(input("Enter amount of points (n)    : "))
+    R = int(input("Enter dimension of points (R) : "))
 
-    print("Closest Pair: ",end="")
-    gc.printCoordinate(arrayCoordinate[tempi])
-    print(" ",end="")
-    gc.printCoordinate(arrayCoordinate[tempj])
+    Array = generateCoordinate(n, R)
+
+    choice = input("1) Brute Force\n2) Divide and Conquer\nChoose Algorithm    : ")
+
+    start = time() * 1000
+
+    if (choice == 0):
+        first, second = closestPair(Array)
+        distance = calculateDistance(Array[first], Array[second], R)
+    else:
+        first, second, distance = solveDivideAndConquer(Array, n, R)
+
+    finish = time() * 1000
+
+    time_taken = finish - start
+
+    print("Closest Pair: ", end = '')
+    printCoordinate(Array[first])
+    printCoordinate(Array[second])
     print()
 
-    print("Executed Time:", timetaken,"ms")
+    print(f'Distance: {distance}')
 
-    dc.displayCoordinate(arrayCoordinate,arrayCoordinate[tempi],arrayCoordinate[tempj])
+    print("Executed Time: ", time_taken, "ms")
 
-mainBF()
+    if (R == 3):
+        displayCoordinate(Array, Array[first], Array[second])
+
+if (__name__ == '__main__'):
+    main()
