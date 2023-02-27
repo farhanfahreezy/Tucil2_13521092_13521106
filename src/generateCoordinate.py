@@ -4,7 +4,7 @@ def generateCoordinate(n,r):
     arrayOfCoordinate = [ [0 for i in range(r)] for j in range(n)]
     for i in range(n):
         for j in range(r):
-            arrayOfCoordinate[i][j] = random.randint(-1000,1000)
+            arrayOfCoordinate[i][j] = random.uniform(-1000,1000)
     return arrayOfCoordinate
 
 def printCoordinate(coordinate):

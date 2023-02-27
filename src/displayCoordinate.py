@@ -8,7 +8,7 @@ def displayCoordinate(arrayCoordinate, c1, c2):
     # Masukin semua koordinat ke diagram
     for i in range(len(arrayCoordinate)):
         x, y, z = arrayCoordinate[i]
-        ax.scatter(x, y, z, c='b')
+        ax.scatter(x, y, z, c='g',s=1)
 
     # Buat garis diantara c1 dan c2
     x1, y1, z1 = c1

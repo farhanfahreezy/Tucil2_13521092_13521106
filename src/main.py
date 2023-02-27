@@ -1,4 +1,4 @@
-from generateCoordinate import generateCoordinate, printCoordinate, printArrayCoordinate
+from generateCoordinate import generateCoordinate, printCoordinate
 from displayCoordinate import displayCoordinate 
 from bruteForce import closestPair
 from divideAndConquer import solveDivideAndConquer

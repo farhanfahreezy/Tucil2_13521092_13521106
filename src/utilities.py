@@ -56,3 +56,11 @@ def calculateDistance(first_point: list[float], second_point: list[float], size:
         value += (first_point[i] - second_point[i])**2
     return math.sqrt(value)
 
+def pointToStr(point):
+    strPoint = "("
+    for i in range(len(point)):
+        strPoint+=str(round(point[i],2))
+        if(i!=len(point)-1):
+            strPoint+=","
+    return strPoint+")"
+
