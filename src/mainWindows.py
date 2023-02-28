@@ -4,10 +4,12 @@ from bruteForce import closestPair
 from divideAndConquer import solveDivideAndConquer
 from utilities import calculateDistance, pointToStr
 from time import time
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 from pathlib import Path
 
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label
+from tkinter import Tk, Canvas, Entry, Frame, Button, PhotoImage, Label
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -24,11 +26,14 @@ def validate_int(val):
         return False
     
 def calculate_BF():
-    n = int(entry_1.get())
-    R = int(entry_2.get())
-    if(n==0 or R==0):
-        print("Error Message")
+    clear_label(window)
+    input_n = entry_1.get()
+    input_R = entry_2.get()
+    if(input_n=="0" or input_R=="0" or input_n=="" or input_R==""):
+        show_error()
     else:
+        n = int(input_n)
+        R = int(input_R)
         Array = generateCoordinate(n, R)
         start = time() * 1000
         first, second = closestPair(Array)
@@ -44,17 +49,20 @@ def calculate_BF():
 
         print("Executed Time: ", time_taken, "ms")
         show_execute_time(time_taken)
-        show_results(Array[first], Array[second],distance)
+        show_results(Array[first], Array[second],distance,"Brute Force")
 
         if (R == 3):
-            displayCoordinate(Array, Array[first], Array[second])
+            show_plot(Array, Array[first], Array[second])
 
 def calculate_DnC():
-    n = int(entry_1.get())
-    R = int(entry_2.get())
-    if(n==0 or R==0):
-        print("Error Message")
+    clear_label(window)
+    input_n = entry_1.get()
+    input_R = entry_2.get()
+    if(input_n=="0" or input_R=="0" or input_n=="" or input_R==""):
+        show_error()
     else:
+        n = int(input_n)
+        R = int(input_R)
         Array = generateCoordinate(n, R)
         start = time() * 1000
         first, second, distance = solveDivideAndConquer(Array, n, R)
@@ -70,10 +78,10 @@ def calculate_DnC():
         print("Executed Time: ", time_taken, "ms")
 
         show_execute_time(time_taken)
-        show_results(Array[first], Array[second],distance)
+        show_results(Array[first], Array[second],distance,"Divide \n& Conquer")
 
         if (R == 3):
-            displayCoordinate(Array, Array[first], Array[second])
+            show_plot(Array, Array[first], Array[second])
 
 def show_execute_time(time):
     executed = Label(window,
@@ -87,7 +95,7 @@ def show_execute_time(time):
     y=649.0,
 )
 
-def show_results(point1,point2,dist):
+def show_results(point1,point2,dist,algorithm):
     point_1 = pointToStr(point1)
     point_2 = pointToStr(point2)
     result_p1 = Label(window,
@@ -118,8 +126,63 @@ def show_results(point1,point2,dist):
                      fg="#DCFFC1")
     result_dist.place(
     x=510.0,
-    y=600.0,
+    y=570.0,
     )
+    result_algorithm = Label(window,
+                     text = algorithm, 
+                     font=("Arial Black",10),
+                     justify="center",
+                     bg="#2E2E48",
+                     fg="#DCFFC1")
+    result_algorithm.place(
+    x=490.0,
+    y=635.0,
+    )
+
+def show_plot(arrayCoordinate, c1, c2):
+    # c1 dan c2 adalah 2 koordinat yang akan digaris
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Masukin semua koordinat ke diagram
+    for i in range(len(arrayCoordinate)):
+        x, y, z = arrayCoordinate[i]
+        ax.scatter(x, y, z, c='g',s=1)
+
+    # Buat garis diantara c1 dan c2
+    x1, y1, z1 = c1
+    x2, y2, z2 = c2
+    ax.scatter(x1, y1, z1, c='r',s=10)
+    ax.scatter(x2, y2, z2, c='r',s=10)
+    ax.plot([x1, x2], [y1, y2], [z1, z2], c='r')
+
+    ax.set_xlabel('Sumbu X')
+    ax.set_ylabel('Sumbu Y')
+    ax.set_zlabel('Sumbu Z')
+
+    canvas_figure = FigureCanvasTkAgg(fig, master=canvas)
+    canvas_figure.draw()
+    canvas_figure.get_tk_widget().place(x=640, y=87, width=600, height=600)
+    
+    canvas.graph = canvas_figure
+
+def show_error():
+    errorMsg = Label(window,
+                     text = "Input cannot be blank\nor zero", 
+                     font=("Arial Black",10),
+                     anchor="w",
+                     justify="left",
+                     bg="#393952",
+                     fg="#FFC9C1")
+    errorMsg.place(
+    x=200.0,
+    y=639.0,
+)
+
+def clear_label(window):
+    for child in window.winfo_children():
+        if isinstance(child, Label):
+            child.destroy()
 
 window = Tk()
 
@@ -234,5 +297,5 @@ button_2.place(
     width=182.0,
     height=73.0
 )
-window.resizable(True, True)
+window.resizable(False, False)
 window.mainloop()
