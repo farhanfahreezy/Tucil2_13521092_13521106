@@ -13,12 +13,13 @@ def main():
 
     Array = generateCoordinate(n, R)
 
-    choice = input("1) Brute Force\n2) Divide and Conquer\nChoose Algorithm    : ")
+    choice = int(input("1) Brute Force\n2) Divide and Conquer\nChoose Algorithm    : "))
 
     start = time() * 1000
 
-    if (choice == 0):
-        first, second = closestPair(Array)
+    # eucledianCount = 10
+    if (choice == 1):
+        first, second, eucledianCount = closestPair(Array)
         distance = calculateDistance(Array[first], Array[second], R)
     else:
         first, second, distance = solveDivideAndConquer(Array, n, R)
@@ -33,6 +34,8 @@ def main():
     print()
 
     print(f'Distance: {distance}')
+
+    print(f'Eucledian Count: {eucledianCount}')
 
     print("Executed Time: ", time_taken, "ms")
 

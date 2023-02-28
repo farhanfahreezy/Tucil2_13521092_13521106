@@ -1,20 +1,20 @@
-from generateCoordinate import generateCoordinate, printCoordinate
-from displayCoordinate import displayCoordinate 
+from generateCoordinate import generateCoordinate
 from bruteForce import closestPair
 from divideAndConquer import solveDivideAndConquer
 from utilities import calculateDistance, pointToStr
 from time import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-
 from pathlib import Path
-
 from tkinter import Tk, Canvas, Entry, Frame, Button, PhotoImage, Label
+import webbrowser
 
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"./assets/frame0")
 
+global Array
+Array = -999
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -24,78 +24,50 @@ def validate_int(val):
         return True
     else:
         return False
-    
-def calculate_BF():
+
+def generate_array():
     clear_label(window)
     input_n = entry_1.get()
     input_R = entry_2.get()
     if(input_n=="0" or input_R=="0" or input_n=="" or input_R==""):
-        show_error()
+        show_message("Input cannot be blank\nor zero","#FFC9C1")
     else:
+        show_message("Point generated\nsucessfully!","#DCFFC1")
         n = int(input_n)
         R = int(input_R)
+        global Array
         Array = generateCoordinate(n, R)
+
+def calculate_BF():
+    clear_label(window)
+    if(Array == -999):
+        show_message("Point is not generated\n,yet!","#FFC9C1")
+    else:
         start = time() * 1000
-        first, second = closestPair(Array)
-        distance = calculateDistance(Array[first], Array[second], R)
+        first, second, eucledianCount = closestPair(Array)
+        distance = calculateDistance(Array[first], Array[second], len(Array[0]))
         finish = time() * 1000
         time_taken = finish - start
-        print("Closest Pair: ", end = '')
-        printCoordinate(Array[first])
-        printCoordinate(Array[second])
-        print()
+        show_results(Array[first], Array[second],distance,"Brute Force",time_taken,eucledianCount)
 
-        print(f'Distance: {distance}')
-
-        print("Executed Time: ", time_taken, "ms")
-        show_execute_time(time_taken)
-        show_results(Array[first], Array[second],distance,"Brute Force")
-
-        if (R == 3):
+        if (len(Array[0]) == 3):
             show_plot(Array, Array[first], Array[second])
 
 def calculate_DnC():
     clear_label(window)
-    input_n = entry_1.get()
-    input_R = entry_2.get()
-    if(input_n=="0" or input_R=="0" or input_n=="" or input_R==""):
-        show_error()
+    if(Array == -999):
+        show_message("Point is not generated\n,yet!","#FFC9C1")
     else:
-        n = int(input_n)
-        R = int(input_R)
-        Array = generateCoordinate(n, R)
         start = time() * 1000
-        first, second, distance = solveDivideAndConquer(Array, n, R)
+        first, second, distance, eucledianCount = solveDivideAndConquer(Array, len(Array), len(Array[0]))
         finish = time() * 1000
         time_taken = finish - start
-        print("Closest Pair: ", end = '')
-        printCoordinate(Array[first])
-        printCoordinate(Array[second])
-        print()
+        show_results(Array[first], Array[second],distance,"Divide\n& Conquer",time_taken,eucledianCount)
 
-        print(f'Distance: {distance}')
-
-        print("Executed Time: ", time_taken, "ms")
-
-        show_execute_time(time_taken)
-        show_results(Array[first], Array[second],distance,"Divide \n& Conquer")
-
-        if (R == 3):
+        if (len(Array[0]) == 3):
             show_plot(Array, Array[first], Array[second])
-
-def show_execute_time(time):
-    executed = Label(window,
-                     text = str(round(time,2)) + " ms", 
-                     font=("Arial Black",10),
-                     anchor="w",
-                     bg="#393952",
-                     fg="#DCFFC1")
-    executed.place(
-    x=200.0,
-    y=649.0,
-)
-
-def show_results(point1,point2,dist,algorithm):
+    
+def show_results(point1,point2,dist,algorithm,time,eucledian):
     point_1 = pointToStr(point1)
     point_2 = pointToStr(point2)
     result_p1 = Label(window,
@@ -106,7 +78,7 @@ def show_results(point1,point2,dist,algorithm):
                      fg="#DCFFC1")
     result_p1.place(
     x=450.0,
-    y=480.0,
+    y=414.0,
     )
     result_p2 = Label(window,
                      text = point_2, 
@@ -116,7 +88,7 @@ def show_results(point1,point2,dist,algorithm):
                      fg="#DCFFC1")
     result_p2.place(
     x=450.0,
-    y=510.0,
+    y=436.0,
     )
     result_dist = Label(window,
                      text = str(round(dist,2)), 
@@ -125,8 +97,8 @@ def show_results(point1,point2,dist,algorithm):
                      bg="#2E2E48",
                      fg="#DCFFC1")
     result_dist.place(
-    x=510.0,
-    y=570.0,
+    x=505.0,
+    y=485.0,
     )
     result_algorithm = Label(window,
                      text = algorithm, 
@@ -136,7 +108,27 @@ def show_results(point1,point2,dist,algorithm):
                      fg="#DCFFC1")
     result_algorithm.place(
     x=490.0,
-    y=635.0,
+    y=585.0,
+    )
+    executed = Label(window,
+                     text = str(round(time,2)) + " ms", 
+                     font=("Arial Black",10),
+                     anchor="w",
+                     bg="#2E2E48",
+                     fg="#DCFFC1")
+    executed.place(
+    x=500.0,
+    y=649.0,
+    )
+    eucledianCount = Label(window,
+                     text = eucledian, 
+                     font=("Arial Black",10),
+                     justify="center",
+                     bg="#2E2E48",
+                     fg="#DCFFC1")
+    eucledianCount.place(
+    x=510.0,
+    y=530.0,
     )
 
 def show_plot(arrayCoordinate, c1, c2):
@@ -166,23 +158,27 @@ def show_plot(arrayCoordinate, c1, c2):
     
     canvas.graph = canvas_figure
 
-def show_error():
-    errorMsg = Label(window,
-                     text = "Input cannot be blank\nor zero", 
+def show_message(message,color):
+    messageShow = Label(window,
+                     text = message, 
                      font=("Arial Black",10),
                      anchor="w",
                      justify="left",
                      bg="#393952",
-                     fg="#FFC9C1")
-    errorMsg.place(
-    x=200.0,
-    y=639.0,
+                     fg=color)
+    messageShow.place(
+    x=450.0,
+    y=250.0,
 )
 
 def clear_label(window):
     for child in window.winfo_children():
         if isinstance(child, Label):
             child.destroy()
+
+def open_github():
+    url = 'https://github.com/farhanfahreezy/Tucil2_13521092_13521106'
+    webbrowser.open(url)
 
 window = Tk()
 
@@ -276,7 +272,7 @@ button_1 = Button(
 )
 button_1.place(
     x=24.0,
-    y=539.0,
+    y=631.0,
     width=182.0,
     height=73.0
 )
@@ -293,9 +289,41 @@ button_2 = Button(
 )
 button_2.place(
     x=215.0,
-    y=539.0,
+    y=631.0,
     width=182.0,
     height=73.0
+)
+
+button_image_3 = PhotoImage(
+    file=relative_to_assets("button_3.png"))
+button_3 = Button(
+    image=button_image_3,
+    borderwidth=0,
+    highlightthickness=0,
+    command=generate_array,
+    relief="flat"
+)
+button_3.place(
+    x=16.0,
+    y=533.0,
+    width=386.0,
+    height=86.0
+)
+
+button_image_4 = PhotoImage(
+    file=relative_to_assets("button_4.png"))
+button_4 = Button(
+    image=button_image_4,
+    borderwidth=0,
+    highlightthickness=0,
+    command=open_github,
+    relief="flat"
+)
+button_4.place(
+    x=338.0,
+    y=72.0,
+    width=79.0,
+    height=84.0
 )
 window.resizable(False, False)
 window.mainloop()

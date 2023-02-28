@@ -2,7 +2,6 @@ from utilities import quickSort, calculateDistance
 
 def closestStrip(strip: list[list[float]], size: int, delta: float) -> float:
     """Find the smallest distance in the strip array.
-
     :param strip: Strip array solved in a two dimensional plane
     :param size: Number of elements in the array
     :param delta: Delta value
@@ -30,7 +29,6 @@ def closestStrip(strip: list[list[float]], size: int, delta: float) -> float:
 
 def divideAndConquer(Array: list[list[float]], size: int, dimension: int) -> (list[float], list[float], float):
     """Solve the closest pair problem with divide and conquer algorithm, returns the index of closest points. Array should be sorted by the last dimension beforehand.
-
     :param Array: Array of points
     :param size: Number of elements in the array
     :dimension: Number of dimension in the points
@@ -84,7 +82,6 @@ def divideAndConquer(Array: list[list[float]], size: int, dimension: int) -> (li
 
 def solveDivideAndConquer(Array: list[list[float]], size: int, dimension: int) -> (int, int, float):
     """Calls the divideAndConquer function to retrieve the values of first_point and second_point, then returns the index of first_point and second_point from the unsorted Array
-
     :param Array: Array of points
     :param size: Number of elements in the array
     :dimension: Number of dimension in the points
