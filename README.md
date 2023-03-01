@@ -50,8 +50,8 @@ python src/mainWindows.py
 │ .gitignore
 │
 ├─── doc
-│     ├─ Pedoman Tugas Besar IF2110 2022_2023.docx
-│     └─ Spesifikasi Tugas Besar IF2110 2022-2023.pdf
+│     ├─ Tucil2_13521092_13521106.docx
+│     └─ Tucil2_13521092_13521106.pdf
 │
 └─── src
       ├─ assets
