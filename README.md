@@ -1,6 +1,6 @@
 # Mencari Pasangan Titik Terdekat 3D dengan Algoritma Divide and Conquer
 
-![DnC Program](src\assets\home.png "DnC Program")
+![DnC Program](./src/assets/home.png "DnC Program")
 
 Mencari sepasang titik terdekat dengan Algoritma Divide and Conquer sudah dijelaskan di dalam kuliah. Persoalan tersebut dirumuskan untuk titik pada bidang datar (2D). Pada Tucil 2 kali ini Anda diminta mengembangkan algoritma mencari sepasang titik terdekat pada bidang 3D. Misalkan terdapat n buah titik pada ruang 3D. Setiap titik P di dalam ruang dinyatakan dengan koordinat `P = (x, y, z)`. Carilah sepasang titik yang mempunyai jarak terdekat satu sama lain. Jarak dua buah titk `P1 = (x1, y1, z1) dan P2 = (x2, y2, z2)` dihitung dengan rumus Euclidean berikut:
 
